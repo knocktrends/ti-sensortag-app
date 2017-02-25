@@ -16,12 +16,15 @@ public class ButtonPressListener {
     private KnockTrendsCustomTimer mTimer;
     private static ButtonPressListener instance = null;
     private List<long> mList;
-    private long currentMilliseconds = 0;
-    private long lastMilliseconds = 0;
+    private long currentMilliseconds;
+    private long lastMilliseconds;
 
     // Singleton protected constructor.  NO ONE GETS IN.
     private ButtonPressListener() {
-        mTimer = KnockTrendsCustomTimer(2, this); // 2 second timeout
+        mTimer = new KnockTrendsCustomTimer(2, this); // 2 second timeout
+        mList = new List<long>();
+        currentMilliseconds = 0;
+        lastMilliseconds = 0;
     }
 
     // Publicly available "constructor"
