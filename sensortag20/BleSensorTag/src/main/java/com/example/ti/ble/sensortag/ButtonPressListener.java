@@ -50,26 +50,26 @@ public class ButtonPressListener {
         return milliseconds;
     }
 
-    private List<Long> resetValues() {
-        List<Long> tempList = mList;
+    private Long[] resetValues() {
+        Long valuesToSend[] = mList.toArray(new Long[mList.size()]);
         if(! mList.isEmpty() ) {
             mList.clear();
         }
-        return tempList;
+        return valuesToSend;
     }
 
-    public void buttonEvent(String event) {
+    public void buttonEvent(boolean event) {
         // parse message, determine if its on or off
         long millisecondDiff = 0;
-        if(event.equals("true")) {
+        if (event) {
             // Button is pressed
             currentMilliseconds = buttonOn();
         }
-        else if(event.equals("false")) {
+        else {
             // Button is off
             currentMilliseconds = buttonOff();
         }
-        // diff current timestamp fromn the last timestamp
+        // diff current timestamp from the last timestamp
         millisecondDiff = currentMilliseconds - lastMilliseconds;
 
         // push integer millisecond value to array
@@ -79,7 +79,7 @@ public class ButtonPressListener {
         lastMilliseconds = currentMilliseconds;
     }
 
-    public List<Long> onTimeout() {
+    public Long[] onTimeout() {
         mTimer.reset();
         return resetValues();
     }

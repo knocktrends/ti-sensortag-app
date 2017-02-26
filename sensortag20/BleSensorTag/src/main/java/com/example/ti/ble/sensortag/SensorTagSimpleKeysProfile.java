@@ -172,7 +172,7 @@ public class SensorTagSimpleKeysProfile extends GenericBluetoothProfile {
 
 //			System.out.print(pressed);
 			Log.e("Pressed", Boolean.toString(pressed));
-			mListener.buttonEvent(Boolean.toString(pressed));
+			mListener.buttonEvent(pressed);
 		}
 	}
     @Override
