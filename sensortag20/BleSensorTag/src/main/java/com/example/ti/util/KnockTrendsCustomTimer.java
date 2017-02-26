@@ -26,13 +26,13 @@ public class KnockTrendsCustomTimer {
             mTimer.cancel();
             mTimer = null;
             mTimer = new Timer();
-            TimeoutTask timeout = new TImeoutTask();
+            TimeoutTask timeout = new TimeoutTask();
             mTimer.schedule(timeout, 0, 1000); // One second tick
         }
     }
 
     public void start() {
-        TimeoutTask timeout = new TImeoutTask();
+        TimeoutTask timeout = new TimeoutTask();
         if(mTimer == null) {
             mTimer = new Timer();
         }

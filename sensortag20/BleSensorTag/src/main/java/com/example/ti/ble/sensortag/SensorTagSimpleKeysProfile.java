@@ -72,11 +72,12 @@ import com.example.ti.util.Point3D;
 public class SensorTagSimpleKeysProfile extends GenericBluetoothProfile {
 
 	boolean pressed = false;
+	ButtonPressListener mListener;
 
 	public SensorTagSimpleKeysProfile(Context con,BluetoothDevice device,BluetoothGattService service,BluetoothLeService controller) {
 		super(con,device,service,controller);
 		this.tRow =  new SensorTagSimpleKeysTableRow(con);
-		ButtonPressListener mListener = ButtonPressListener.getInstance();
+		mListener = ButtonPressListener.getInstance();
 		
 		List<BluetoothGattCharacteristic> characteristics = this.mBTService.getCharacteristics();
 		

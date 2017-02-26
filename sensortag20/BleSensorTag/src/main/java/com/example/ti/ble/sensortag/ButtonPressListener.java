@@ -8,6 +8,7 @@
  */
 package com.example.ti.ble.sensortag;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import com.example.ti.util.KnockTrendsCustomTimer;
@@ -15,14 +16,14 @@ import com.example.ti.util.KnockTrendsCustomTimer;
 public class ButtonPressListener {
     private KnockTrendsCustomTimer mTimer;
     private static ButtonPressListener instance = null;
-    private List<long> mList;
+    private List<Long> mList;
     private long currentMilliseconds;
     private long lastMilliseconds;
 
     // Singleton protected constructor.  NO ONE GETS IN.
     private ButtonPressListener() {
         mTimer = new KnockTrendsCustomTimer(2, this); // 2 second timeout
-        mList = new List<long>();
+        mList = new ArrayList<Long>();
         currentMilliseconds = 0;
         lastMilliseconds = 0;
     }
@@ -37,20 +38,20 @@ public class ButtonPressListener {
 
     private long buttonOff() {
         Date date = new Date();
-        long milliseconds = date.getTime;
+        long milliseconds = date.getTime();
         mTimer.start();
         return milliseconds;
     }
 
     private long buttonOn() {
         Date date = new Date();
-        long milliseconds = date.getTime;
+        long milliseconds = date.getTime();
         mTimer.stop();
         return milliseconds;
     }
 
-    private List<long> resetValues() {
-        List<long> tempList = mList;
+    private List<Long> resetValues() {
+        List<Long> tempList = mList;
         if(! mList.isEmpty() ) {
             mList.clear();
         }
@@ -78,7 +79,7 @@ public class ButtonPressListener {
         lastMilliseconds = currentMilliseconds;
     }
 
-    public List<long> onTimeout() {
+    public List<Long> onTimeout() {
         mTimer.reset();
         return resetValues();
     }
