@@ -51,6 +51,12 @@ public class ButtonPressListener {
     }
 
     private Long[] resetValues() {
+
+        // Still not sure why the first value is useless, but this works. ¯\_(ツ)_/¯
+        if (! mList.isEmpty() ) {
+            mList.remove(0);
+        }
+
         Long valuesToSend[] = mList.toArray(new Long[mList.size()]);
         if(! mList.isEmpty() ) {
             mList.clear();
@@ -59,7 +65,13 @@ public class ButtonPressListener {
     }
 
     public void buttonEvent(boolean event) {
-        // parse message, determine if its on or off
+        // parse message, determine if it's on or off
+
+        // Ignore any "off" messages until we have an "on"
+        if (!event && mList.isEmpty()) {
+            return;
+        }
+
         long millisecondDiff = 0;
         if (event) {
             // Button is pressed
