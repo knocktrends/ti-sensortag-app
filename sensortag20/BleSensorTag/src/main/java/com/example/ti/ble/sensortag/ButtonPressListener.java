@@ -8,7 +8,6 @@
  */
 package com.example.ti.ble.sensortag;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
