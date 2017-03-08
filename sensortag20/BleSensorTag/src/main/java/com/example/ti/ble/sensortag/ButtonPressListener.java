@@ -8,10 +8,19 @@
  */
 package com.example.ti.ble.sensortag;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import com.example.ti.util.KnockTrendsCustomTimer;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import com.google.gson.*;
+
 
 public class ButtonPressListener {
     private KnockTrendsCustomTimer mTimer;
@@ -19,6 +28,7 @@ public class ButtonPressListener {
     private List<Long> mList;
     private long currentMilliseconds;
     private long lastMilliseconds;
+    private static String Endpoint = "http://www.techlikenew.com/test/admin/post.php";
 
     // Singleton protected constructor.  NO ONE GETS IN.
     private ButtonPressListener() {
@@ -61,6 +71,9 @@ public class ButtonPressListener {
         if(! mList.isEmpty() ) {
             mList.clear();
         }
+
+        makePost(valuesToSend);
+
         return valuesToSend;
     }
 
@@ -94,5 +107,23 @@ public class ButtonPressListener {
     public Long[] onTimeout() {
         mTimer.reset();
         return resetValues();
+    }
+
+    public void makePost(Long[] values){
+
+        Gson gson = new GsonBuilder().create();
+        String gSonData = gson.toJson(values);
+
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody postData = new FormBody.Builder().add("data", gSonData).build();
+            Request request = new Request.Builder().url(Endpoint).post(postData).build();
+            Response response = client.newCall(request).execute();
+            System.out.println(response);
+        }catch(Exception e) {
+            System.exit(0);
+        }
+
     }
 }
