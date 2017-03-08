@@ -60,21 +60,13 @@ public class ButtonPressListener {
         return milliseconds;
     }
 
-    private Long[] resetValues() {
+    private void resetValues() {
 
-        // Still not sure why the first value is useless, but this works. ¯\_(ツ)_/¯
-        if (! mList.isEmpty() ) {
-            mList.remove(0);
-        }
-
-        Long valuesToSend[] = mList.toArray(new Long[mList.size()]);
         if(! mList.isEmpty() ) {
             mList.clear();
         }
 
-        makePost(valuesToSend);
-
-        return valuesToSend;
+        return;
     }
 
     public void buttonEvent(boolean event) {
@@ -104,12 +96,28 @@ public class ButtonPressListener {
         lastMilliseconds = currentMilliseconds;
     }
 
-    public Long[] onTimeout() {
+    public void onTimeout() {
         mTimer.reset();
-        return resetValues();
+        makePost();
+        resetValues();
+        return;
     }
 
-    public void makePost(Long[] values){
+    public Long[] getValues(){
+
+        // Still not sure why the first value is useless, but this works. ¯\_(ツ)_/¯
+        if (! mList.isEmpty() ) {
+            mList.remove(0);
+        }
+
+        Long valuesToSend[] = mList.toArray(new Long[mList.size()]);
+
+        return valuesToSend;
+    }
+
+    public void makePost(){
+
+        Long[] values = getValues();
 
         Gson gson = new GsonBuilder().create();
         String gSonData = gson.toJson(values);
@@ -124,6 +132,5 @@ public class ButtonPressListener {
         }catch(Exception e) {
             System.exit(0);
         }
-
     }
 }
