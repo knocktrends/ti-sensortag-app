@@ -13,12 +13,21 @@ import java.util.List;
 import java.util.Date;
 import com.example.ti.util.KnockTrendsCustomTimer;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import com.google.gson.*;
+
+
 public class ButtonPressListener {
     private KnockTrendsCustomTimer mTimer;
     private static ButtonPressListener instance = null;
     private List<Long> mList;
     private long currentMilliseconds;
     private long lastMilliseconds;
+    private static String Endpoint = "http://www.techlikenew.com/test/admin/post.php";
 
     // Singleton protected constructor.  NO ONE GETS IN.
     private ButtonPressListener() {
@@ -50,18 +59,13 @@ public class ButtonPressListener {
         return milliseconds;
     }
 
-    private Long[] resetValues() {
+    private void resetValues() {
 
-        // Still not sure why the first value is useless, but this works. ¯\_(ツ)_/¯
-        if (! mList.isEmpty() ) {
-            mList.remove(0);
-        }
-
-        Long valuesToSend[] = mList.toArray(new Long[mList.size()]);
         if(! mList.isEmpty() ) {
             mList.clear();
         }
-        return valuesToSend;
+
+        return;
     }
 
     public void buttonEvent(boolean event) {
@@ -91,8 +95,41 @@ public class ButtonPressListener {
         lastMilliseconds = currentMilliseconds;
     }
 
-    public Long[] onTimeout() {
+    public void onTimeout() {
         mTimer.reset();
-        return resetValues();
+        makePost();
+        resetValues();
+        return;
+    }
+
+    public Long[] getValues(){
+
+        // Still not sure why the first value is useless, but this works. ¯\_(ツ)_/¯
+        if (! mList.isEmpty() ) {
+            mList.remove(0);
+        }
+
+        Long valuesToSend[] = mList.toArray(new Long[mList.size()]);
+
+        return valuesToSend;
+    }
+
+    public void makePost(){
+
+        Long[] values = getValues();
+
+        Gson gson = new GsonBuilder().create();
+        String gSonData = gson.toJson(values);
+
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody postData = new FormBody.Builder().add("data", gSonData).build();
+            Request request = new Request.Builder().url(Endpoint).post(postData).build();
+            Response response = client.newCall(request).execute();
+            System.out.println(response);
+        }catch(Exception e) {
+            System.exit(0);
+        }
     }
 }
