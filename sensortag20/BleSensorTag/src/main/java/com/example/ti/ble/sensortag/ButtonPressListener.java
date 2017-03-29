@@ -11,6 +11,7 @@ package com.example.ti.ble.sensortag;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+
 import com.example.ti.util.KnockTrendsCustomTimer;
 
 import okhttp3.FormBody;
@@ -27,6 +28,7 @@ public class ButtonPressListener {
     private List<Long> mList;
     private long currentMilliseconds;
     private long lastMilliseconds;
+    private String deviceAddress;
     private static String Endpoint = "http://www.techlikenew.com/test/admin/post.php";
 
     // Singleton protected constructor.  NO ONE GETS IN.
@@ -114,6 +116,10 @@ public class ButtonPressListener {
         return valuesToSend;
     }
 
+    public void setDeviceAddress(String address){
+        deviceAddress = address;
+    }
+
     public void makePost(){
 
         Long[] values = getValues();
@@ -121,10 +127,11 @@ public class ButtonPressListener {
         Gson gson = new GsonBuilder().create();
         String gSonData = gson.toJson(values);
 
+
         try {
             OkHttpClient client = new OkHttpClient();
 
-            RequestBody postData = new FormBody.Builder().add("data", gSonData).build();
+            RequestBody postData = new FormBody.Builder().add("data", gSonData).add("device_id", deviceAddress).build();
             Request request = new Request.Builder().url(Endpoint).post(postData).build();
             Response response = client.newCall(request).execute();
             System.out.println(response);
