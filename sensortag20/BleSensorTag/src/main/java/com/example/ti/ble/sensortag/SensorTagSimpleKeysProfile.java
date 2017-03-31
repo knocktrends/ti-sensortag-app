@@ -78,6 +78,7 @@ public class SensorTagSimpleKeysProfile extends GenericBluetoothProfile {
 		super(con,device,service,controller);
 		this.tRow =  new SensorTagSimpleKeysTableRow(con);
 		mListener = ButtonPressListener.getInstance();
+		mListener.setDeviceAddress(device.getAddress());
 		
 		List<BluetoothGattCharacteristic> characteristics = this.mBTService.getCharacteristics();
 		
