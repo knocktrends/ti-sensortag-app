@@ -6,7 +6,7 @@
 *.dex
 
 # Idea files
-.idea/
+*.idea/
 
 # Java class files
 *.class
