@@ -29,7 +29,7 @@ public class ButtonPressListener {
     private long currentMilliseconds;
     private long lastMilliseconds;
     private String deviceAddress;
-    private static String Endpoint = "http://www.techlikenew.com/test/admin/post.php";
+    private static String Endpoint = "http://vm356c.se.rit.edu/knock/";
 
     // Singleton protected constructor.  NO ONE GETS IN.
     private ButtonPressListener() {
@@ -131,7 +131,7 @@ public class ButtonPressListener {
         try {
             OkHttpClient client = new OkHttpClient();
 
-            RequestBody postData = new FormBody.Builder().add("data", gSonData).add("device_id", deviceAddress).build();
+            RequestBody postData = new FormBody.Builder().add("pattern", gSonData).add("deviceId", deviceAddress).build();
             Request request = new Request.Builder().url(Endpoint).post(postData).build();
             Response response = client.newCall(request).execute();
             System.out.println(response);
